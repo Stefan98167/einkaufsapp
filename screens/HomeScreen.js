@@ -2,13 +2,19 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import AddButton from '../components/Add_Button';
 import List_Element from '../components/List_Element';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeScreen = () => {
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={['#000000', '#4B2F7B']}
+            style={styles.container}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1.5 }}
+        >
             <AddButton />
             <List_Element />
-        </View>
+        </LinearGradient>
     );
 };
 
@@ -17,9 +23,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        width: '100%'
     },
 });
 
 export default HomeScreen;
-
