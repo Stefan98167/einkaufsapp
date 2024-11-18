@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import AddButton from '../components/Add_Button';
-
+import List_Element from '../components/List_Element';
 
 const HomeScreen = () => {
     return (
         <View style={styles.container}>
             <AddButton />
+            <List_Element />
         </View>
     );
 };
