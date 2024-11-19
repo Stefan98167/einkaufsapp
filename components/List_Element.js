@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: '80%',
     margin: '1%',
     borderRadius: '4%',
-    justifyContent: 'center', // Vertikale Zentrierung
+    justifyContent: 'center', 
   },
   countItem: {
     height: '75%',
