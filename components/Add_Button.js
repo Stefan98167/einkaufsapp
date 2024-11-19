@@ -1,29 +1,40 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const AddButton = () => {
-    return (
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
-    );
-};
+const AddButton = () => (
+  <TouchableOpacity style={styles.buttonContainer}>
+    <LinearGradient colors={["#8B5FAD", "#574076"]} style={styles.button}>
+      <Text>
+        <Text style={styles.plusSign}>+</Text>
+        <Text style={styles.buttonText}> Add New Item</Text>
+      </Text>
+    </LinearGradient>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#2196F3',
-        padding: 12,
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 3,
-        marginVertical: 10,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '600',
-    },
+  buttonContainer: {
+    marginHorizontal: 10,
+    marginVertical: 70,
+  },
+  button: {
+    padding: 30,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+    fontFamily: "Montserrat-Bold",
+  },
+  plusSign: {
+    color: "#291440",
+    fontSize: 20,
+    fontFamily: "Montserrat-Bold",
+  },
 });
 
 export default AddButton;
