@@ -13,10 +13,10 @@ const List_Element = () => {
     { id: '7', name: 'Schiwasser VO ÜS', count: 3 },
     { id: '8', name: 'Mohren Spezial', count: 24 },
     { id: '9', name: 'Egger Wälderle', count: 6 },
-    { id: '10', name: 'Wälder Keks', count: 4 },
+    { id: '10', name: 'Wälder Koks', count: 4 },
     { id: '11', name: 'Mohren Spezial', count: 24 },
     { id: '12', name: 'Egger Wälderle', count: 6 },
-    { id: '13', name: 'Wälder Keks', count: 4 },
+    { id: '13', name: 'Wälder Koks', count: 4 },
   ];
 
   const renderItem = ({ item }) => (
@@ -69,14 +69,14 @@ const styles = StyleSheet.create({
     flex: 5,
     height: 60,
     width: '100%',
-    borderRadius: '4%',
+    borderRadius: 10,
     justifyContent: 'center',
   },
   countItem: {
     flex: 1,
     width: 100,
     height: 60,
-    borderRadius: '20%',
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: '5%',
