@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const List_Element = () => {
@@ -14,6 +14,9 @@ const List_Element = () => {
     { id: '8', name: 'Mohren Spezial', count: 24 },
     { id: '9', name: 'Egger Wälderle', count: 6 },
     { id: '10', name: 'Wälder Keks', count: 4 },
+    { id: '11', name: 'Mohren Spezial', count: 24 },
+    { id: '12', name: 'Egger Wälderle', count: 6 },
+    { id: '13', name: 'Wälder Keks', count: 4 },
   ];
 
   const renderItem = ({ item }) => (
@@ -38,37 +41,45 @@ const List_Element = () => {
   );
 
   return (
-    <FlatList
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.flatListContent}
+        scrollEnabled={false} // Disable FlatList scrolling to use ScrollView's scrolling
+      />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+  },
   listContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '-10%',
     marginHorizontal: '5%',
-  },
+    marginVertical: '2%',
+    width: '90%',
 
+  },
   listItem: {
-    flex: '1%',
-    height: '75%',
-    width: '80%',
-    margin: '1%',
+    flex: 5,
+    height: 60,
+    width: '100%',
     borderRadius: '4%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   },
   countItem: {
-    height: '75%',
-    width: '15%',
+    flex: 1,
+    width: 100,
+    height: 60,
     borderRadius: '20%',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '5%',
   },
   itemText: {
     fontSize: 18,
@@ -84,6 +95,10 @@ const styles = StyleSheet.create({
     color: '#000',
     padding: '5%',
   },
+  flatListContent: {
+    paddingBottom: 30,
+  },
+
 });
 
 export default List_Element;
