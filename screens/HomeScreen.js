@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const HomeScreen = () => {
     return (
         <LinearGradient
-            colors={['#000000', '#4B2F7B']}
+            colors={['#171717', '#4B2F7B']}
             style={styles.container}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1.5 }}
