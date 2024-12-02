@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, ScrollView } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Link } from "expo-router";
 
 interface ListItem {
   id: string;
@@ -20,89 +21,88 @@ const ListElement = () => {
     { id: "8", name: "Mohren Spezial", count: 24 },
     { id: "9", name: "Egger Wälderle", count: 6 },
     { id: "10", name: "Wälder Koks", count: 4 },
-    { id: "11", name: "Mohren Spezial", count: 24 },
-    { id: "12", name: "Egger Wälderle", count: 6 },
-    { id: "13", name: "Wälder Koks", count: 4 },
   ];
 
   const renderItem = ({ item }: { item: ListItem }) => (
-    <View style={styles.listContainer}>
-      <LinearGradient
-        colors={["#CDC1CE", "#D1A5FE"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.listItem}
-      >
-        <Text style={styles.itemText}>{item.name}</Text>
-      </LinearGradient>
-      <LinearGradient
-        colors={["#D1A5FE", "#BC8BCE"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.countItem}
-      >
-        <Text style={styles.countText}>{item.count}</Text>
-      </LinearGradient>
-    </View>
+    <Link
+      href={{
+        pathname: "/DetailsScreen",
+        params: { name: item.name },
+      }}
+    >
+      <View style={styles.listContainer}>
+        <LinearGradient
+          colors={["#CDC1CE", "#D1A5FE"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.listItem}
+        >
+          <Text style={styles.itemText}>{item.name}</Text>
+        </LinearGradient>
+        <LinearGradient
+          colors={["#D1A5FE", "#BC8BCE"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.countItem}
+        >
+          <Text style={styles.countText}>{item.count}</Text>
+        </LinearGradient>
+      </View>
+    </Link>
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.flatListContent}
-        scrollEnabled={false}
-      />
-    </ScrollView>
+    <FlatList
+      data={data}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+      contentContainerStyle={styles.flatListContent}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-  },
   listContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignSelf: "center", // Centers the container horizontally
     marginHorizontal: "5%",
-    marginVertical: "2%",
-    width: "90%",
+    marginBottom: 15, // Space between elements
+    width: "100%",
   },
   listItem: {
+    marginTop: 15,
     flex: 5,
     height: 60,
-    width: "100%",
     borderRadius: 10,
     justifyContent: "center",
+    marginLeft: 30,
   },
   countItem: {
+    marginTop: 15,
     flex: 1,
-    width: 100,
     height: 60,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
     marginLeft: "5%",
+    marginRight: 30,
   },
   itemText: {
     fontSize: 18,
-    fontFamily: "Montserat-Bold",
     fontWeight: "800",
     color: "#000",
-    padding: "5%",
+    paddingHorizontal: "5%",
   },
   countText: {
     fontSize: 18,
-    fontFamily: "Montserat-Bold",
     fontWeight: "800",
     color: "#000",
-    padding: "5%",
   },
   flatListContent: {
-    paddingBottom: 30,
+    paddingVertical: 20, // Ensures padding at the top and bottom of the list
   },
 });
+
 
 export default ListElement;

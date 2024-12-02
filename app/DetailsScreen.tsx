@@ -1,16 +1,11 @@
-import { StyleSheet, Image, Platform } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Text } from "react-native";
-
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import { useLocalSearchParams } from "expo-router";
 
 export default function DetailsScreen() {
+  const { name } = useLocalSearchParams();
+
   return (
     <LinearGradient
       colors={["#171717", "#4B2F7B"]}
@@ -18,7 +13,8 @@ export default function DetailsScreen() {
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1.5 }}
     >
-      <Text>DetailsScreen</Text>
+      <Text style={styles.text}>Details Screen</Text>
+      <Text style={styles.text}>Name: {name}</Text>
     </LinearGradient>
   );
 }
@@ -26,8 +22,13 @@ export default function DetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     width: "100%",
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
 });
