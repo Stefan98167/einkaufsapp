@@ -33,10 +33,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontFamily: "Montserrat-Bold",
+    fontWeight: "bold",
   },
   plusSign: {
     color: "#291440",
     fontSize: 20,
     fontFamily: "Montserrat-Bold",
+    fontWeight: "bold",
   },
 });
