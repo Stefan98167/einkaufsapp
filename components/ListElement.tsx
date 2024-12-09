@@ -7,27 +7,29 @@ interface ListItem {
   id: string;
   name: string;
   count: number;
+  size: string;
 }
 
 const ListElement = () => {
   const data: ListItem[] = [
-    { id: "1", name: "Ländle Milch", count: 7 },
-    { id: "2", name: "Coca-Cola", count: 2 },
-    { id: "3", name: "Barilla Spaghetti", count: 1 },
-    { id: "4", name: "Wiener Schnitzel", count: 2 },
-    { id: "5", name: "Ländle Kartoffel", count: 3 },
-    { id: "6", name: "Vöslauer Limo", count: 8 },
-    { id: "7", name: "Schiwasser VO ÜS", count: 3 },
-    { id: "8", name: "Mohren Spezial", count: 24 },
-    { id: "9", name: "Egger Wälderle", count: 6 },
-    { id: "10", name: "Wälder Koks", count: 4 },
+    { id: "1", name: "Ländle Milch", count: 7, size: "1000ml" },
+    { id: "2", name: "Coca-Cola", count: 2, size: "500ml" },
+    { id: "3", name: "Barilla Spaghetti", count: 1, size: "500g" },
+    { id: "4", name: "Wiener Schnitzel", count: 2, size: "1000g" },
+    { id: "5", name: "Ländle Kartoffel", count: 3, size: "1000g" },
+    { id: "6", name: "Vöslauer Limo", count: 8, size: "500ml" },
+    { id: "7", name: "Schiwasser VO ÜS", count: 3, size: "1000ml" },
+    { id: "8", name: "Mohren Spezial", count: 24, size: "500ml" },
+    { id: "9", name: "Egger Wälderle", count: 6, size: "330ml" },
+    { id: "10", name: "Wälder Koks", count: 4, size: "500ml" },
   ];
 
   const renderItem = ({ item }: { item: ListItem }) => (
     <Link
       href={{
         pathname: "/DetailsScreen",
-        params: { name: item.name },
+        params: { name: item.name, count: item.count, size: item.size },
+        
       }}
     >
       <View style={styles.listContainer}>
@@ -65,9 +67,9 @@ const styles = StyleSheet.create({
   listContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignSelf: "center", // Centers the container horizontally
+    alignSelf: "center", 
     marginHorizontal: "5%",
-    marginBottom: 15, // Space between elements
+    marginBottom: 15, 
     width: "100%",
   },
   listItem: {
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   flatListContent: {
-    paddingVertical: 20, // Ensures padding at the top and bottom of the list
+    paddingVertical: 20, 
   },
 });
 

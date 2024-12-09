@@ -5,6 +5,7 @@ import Product_Information from "../components/Product_Information";
 import React from "react";
 
 
+
 export default function DetailsScreen() {
   
 
@@ -17,7 +18,7 @@ export default function DetailsScreen() {
     >
        <ProductImage />
        <Product_Information />
-      
+
     </LinearGradient>
   );
 }

@@ -11,19 +11,18 @@ export default function Count_Item() {
 
 const styles = StyleSheet.create({
     countContainer: { 
-        width: 60,
-        height: 60, 
+        width: 50, 
+        height: 50, 
         backgroundColor: 'transparent', 
-        borderRadius: 15,
+        borderRadius: 12,
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: '#FFFFFF', 
         justifyContent: 'center',
-        marginLeft: 30,
+        alignItems: 'center', 
     },
     countText: {
         color: '#FFFFFF',
-        textAlign: 'center',
-        fontSize: 30,
+        fontSize: 22, 
         fontWeight: 'bold',
     },
 });
