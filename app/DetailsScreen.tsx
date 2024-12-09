@@ -1,10 +1,12 @@
 import { StyleSheet, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import ProductImage from "../components/ProductImage";
+import Product_Information from "../components/Product_Information";
 import React from "react";
-import { useLocalSearchParams } from "expo-router";
+
 
 export default function DetailsScreen() {
-  const { name } = useLocalSearchParams();
+  
 
   return (
     <LinearGradient
@@ -13,8 +15,9 @@ export default function DetailsScreen() {
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1.5 }}
     >
-      <Text style={styles.text}>Details Screen</Text>
-      <Text style={styles.text}>Name: {name}</Text>
+       <ProductImage />
+       <Product_Information />
+      
     </LinearGradient>
   );
 }
