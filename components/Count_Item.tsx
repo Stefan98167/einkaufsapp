@@ -1,10 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 
 export default function Count_Item() {
+    const { count } = useLocalSearchParams();
     return (
         <View style={styles.countContainer}>
-            <Text style={styles.countText}>7</Text>
+            <Text style={styles.countText}>{ count }</Text>
         </View>
     );
 }
@@ -19,6 +21,7 @@ const styles = StyleSheet.create({
         borderColor: '#FFFFFF', 
         justifyContent: 'center',
         alignItems: 'center', 
+
     },
     countText: {
         color: '#FFFFFF',

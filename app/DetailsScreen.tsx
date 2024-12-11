@@ -1,14 +1,10 @@
-import { StyleSheet, Text } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ProductImage from "../components/ProductImage";
 import Product_Information from "../components/Product_Information";
-import React from "react";
-
-
 
 export default function DetailsScreen() {
-  
-
   return (
     <LinearGradient
       colors={["#171717", "#4B2F7B"]}
@@ -16,9 +12,8 @@ export default function DetailsScreen() {
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1.5 }}
     >
-       <ProductImage />
-       <Product_Information />
-
+      <ProductImage />
+      <Product_Information />
     </LinearGradient>
   );
 }
@@ -26,13 +21,9 @@ export default function DetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#FFFFFF",
   },
 });

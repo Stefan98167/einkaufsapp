@@ -8,6 +8,7 @@ interface ListItem {
   name: string;
   count: number;
   size: string;
+  
 }
 
 const ListElement = () => {
@@ -25,6 +26,7 @@ const ListElement = () => {
   ];
 
   const renderItem = ({ item }: { item: ListItem }) => (
+    
     <Link
       href={{
         pathname: "/DetailsScreen",
