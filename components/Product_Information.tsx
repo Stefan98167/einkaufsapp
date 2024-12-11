@@ -14,9 +14,9 @@ export default function Product_Information() {
         <Count_Item />
       </View>
       <Text style={styles.productSize}>{size}</Text>
-      <NutritionalTable />
+      
       <View style={styles.nutriScoreContainer}>
-
+      <NutritionalTable />
       </View>
     </View>
   );
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   headerContainer: {
     flexDirection: "row",
@@ -51,11 +51,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 0,
     fontFamily: "Montserrat-Bold",
+    marginLeft: 30,
     
   },
   nutriScoreContainer: {
     marginTop: 15,
     alignItems: "center",
+    width: "100%",
   },
 
 });
