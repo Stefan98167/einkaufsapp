@@ -24,35 +24,33 @@ export default function Count_Item() {
 
       {/* Modal for WheelPicker */}
       <Modal
-        transparent={true}
-        visible={isPickerVisible}
-        animationType="fade"
-        onRequestClose={() => setPickerVisible(false)}
+  transparent={true}
+  visible={isPickerVisible}
+  animationType="fade"
+  onRequestClose={() => setPickerVisible(false)}
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.pickerContainer}>
+      <WheelPickerExpo
+        items={items}
+        onChange={(selected) => {
+          console.log("Selected item:", selected);
+        }}
+        haptics={true}
+        renderItem={({ label }) => (
+          <Text style={styles.pickerItem}>{label}</Text>
+        )}
+      />
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => setPickerVisible(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.pickerContainer}>
-          <WheelPickerExpo
-  items={items}
-  onChange={(selected) => {
-    console.log("Selected item:", selected);
-  }}
-  haptics={true}
-  renderItem={({ label }) => (
-    <Text style={styles.pickerItem}>{label}</Text>
-  )}
-/>
+        <Text style={styles.closeButtonText}>Close</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
 
-
-
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setPickerVisible(false)}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
@@ -92,9 +90,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   pickerContainer: {
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Halbtransparenter Hintergrund
     borderRadius: 12,
-    padding: 0,
+    padding: 20,
     alignItems: "center",
     width: "80%",
   },
