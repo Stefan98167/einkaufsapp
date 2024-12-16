@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Modal, TouchableOpacity, Platform } from "react
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
 
-export default function Count_Item() {
+export default function CountItemHome() {
   const { count } = useLocalSearchParams();
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(count || "1");
@@ -17,6 +17,7 @@ export default function Count_Item() {
         onPress={() => setPickerVisible(true)}
         style={styles.countContainer}
       >
+        
         <Text style={styles.countText}>{selectedValue}</Text>
       </TouchableOpacity>
 
@@ -60,15 +61,13 @@ const styles = StyleSheet.create({
   countContainer: {
     width: 50,
     height: 50,
-    backgroundColor: "transparent",
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
+
     justifyContent: "center",
     alignItems: "center",
   },
   countText: {
-    color: "#FFFFFF",
+    color: "#00000",
     fontSize: 22,
     fontWeight: "bold",
   },

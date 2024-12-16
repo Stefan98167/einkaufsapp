@@ -1,14 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
+import CountItemHome from "./CountItemHome";
 
 interface ListItem {
   id: string;
   name: string;
   count: number;
   size: string;
-  
 }
 
 const ListElement = () => {
@@ -26,33 +26,35 @@ const ListElement = () => {
   ];
 
   const renderItem = ({ item }: { item: ListItem }) => (
-    
-    <Link
-      href={{
-        pathname: "/DetailsScreen",
-        params: { name: item.name, count: item.count, size: item.size },
-        
-      }}
-    >
-      <View style={styles.listContainer}>
-        <LinearGradient
-          colors={["#CDC1CE", "#D1A5FE"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.listItem}
-        >
-          <Text style={styles.itemText}>{item.name}</Text>
-        </LinearGradient>
-        <LinearGradient
-          colors={["#D1A5FE", "#BC8BCE"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.countItem}
-        >
-          <Text style={styles.countText}>{item.count}</Text>
-        </LinearGradient>
-      </View>
-    </Link>
+    <View style={styles.listContainer}>
+      <Link
+        href={{
+          pathname: "/DetailsScreen",
+          params: { name: item.name, count: item.count, size: item.size },
+        }}
+        asChild
+      >
+        <Pressable style={styles.listItemContainer}>
+          <LinearGradient
+            colors={["#CDC1CE", "#D1A5FE"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.listItem}
+          >
+            <Text style={styles.itemText}>{item.name}</Text>
+          </LinearGradient>
+        </Pressable>
+      </Link>
+
+      <LinearGradient
+        colors={["#D1A5FE", "#BC8BCE"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.countItem}
+      >
+        <CountItemHome />
+      </LinearGradient>
+    </View>
   );
 
   return (
@@ -66,47 +68,39 @@ const ListElement = () => {
 };
 
 const styles = StyleSheet.create({
+  flatListContent: {
+    paddingVertical: 20,
+  },
   listContainer: {
     flexDirection: "row",
+    alignItems: "center",
+    width: "95%",          // feste Breite für alle Elemente
+    alignSelf: "center",
+    marginBottom: 15,
     justifyContent: "space-between",
-    alignSelf: "center", 
-    marginHorizontal: "5%",
-    marginBottom: 15, 
-    width: "100%",
+  },
+  listItemContainer: {
+    flex: 1,
+    marginRight: 10,       // Abstand zwischen Listelement und Count-Item
   },
   listItem: {
-    marginTop: 15,
-    flex: 5,
     height: 60,
     borderRadius: 10,
     justifyContent: "center",
-    marginLeft: 30,
+    paddingHorizontal: 20, // etwas horizontaler Padding für den Text
   },
   countItem: {
-    marginTop: 15,
-    flex: 1,
+    width: 60,             // Count-Item quadratisch
     height: 60,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: "5%",
-    marginRight: 30,
   },
   itemText: {
     fontSize: 18,
     fontWeight: "800",
     color: "#000",
-    paddingHorizontal: "5%",
-  },
-  countText: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: "#000",
-  },
-  flatListContent: {
-    paddingVertical: 20, 
   },
 });
-
 
 export default ListElement;
