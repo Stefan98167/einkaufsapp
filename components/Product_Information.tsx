@@ -4,19 +4,44 @@ import Count_Item from "./Count_Item";
 import { useLocalSearchParams } from "expo-router";
 import NutritionalTable from "../components/NutritionalTable";
 
-export default function Product_Information() {
-  const { name, size } = useLocalSearchParams();
+interface ProductData {
+  product: {
+    product_name: string;
+    ingredients_text: string;
+    quantity: string;
+    image_url: string;
+    nutriments: {
+      "energy_value": number;
+      carbohydrates_value: number;
+      fat_value: number;
+      fiber_value: number;
+      proteins_value: number;
+      salt_value: number;
+      "saturated-fat_value": number;
+      sodium_value: number;
+      sugars_value: number;
+    };
+  };
+}
+
+export default function Product_Information({ productData }: { productData: ProductData }) {
+  const productName = productData.product.product_name;
+  const ingredients = productData.product.ingredients_text;
+  const productSize = productData.product.quantity;
+  const imageUrl = productData.product.image_url;
+
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.productName}>{name}</Text>
+        <Text style={styles.productName}>{productName}</Text>
         <Count_Item />
       </View>
-      <Text style={styles.productSize}>{size}</Text>
-      
+      <Text style={styles.productSize}>{productSize}</Text>
+      <Text style={styles.ingredients}>{ingredients}</Text>
+
       <View style={styles.nutriScoreContainer}>
-      <NutritionalTable />
+        <NutritionalTable productData={productData}/>
       </View>
     </View>
   );
@@ -53,6 +78,13 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-Bold",
     marginLeft: 30,
     
+  },
+  ingredients: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    marginTop: 10,
+    fontFamily: "Montserrat-Bold",
+    marginLeft: 30,
   },
   nutriScoreContainer: {
     marginTop: 15,

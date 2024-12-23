@@ -1,7 +1,34 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-export default function NutritionalTable() {
+interface ProductData {
+  product: {
+    nutriments: {
+      "energy_value": number;
+      carbohydrates_value: number;
+      fat_value: number;
+      fiber_value: number;
+      proteins_value: number;
+      salt_value: number;
+      "saturated-fat_value": number;
+      sodium_value: number;
+      sugars_value: number;
+    };
+  };
+}
+
+export default function NutritionalTable({ productData }: { productData: ProductData }) {
+
+  const Energy = productData.product.nutriments["energy_value"];
+  const Carbonhydrates = productData.product.nutriments.carbohydrates_value;
+  const Fat = productData.product.nutriments.fat_value;
+  const Fiber = productData.product.nutriments.fiber_value;
+  const Proteins = productData.product.nutriments.proteins_value;
+  const Salt = productData.product.nutriments.salt_value;
+  const Saturated_Fat = productData.product.nutriments["saturated-fat_value"];
+  const Sodium = productData.product.nutriments.sodium_value;
+  const Sugars = productData.product.nutriments.sugars_value;
+
   return (
     <View style={styles.tableContainer}>
       <View style={styles.contentContainer}>
@@ -16,13 +43,13 @@ export default function NutritionalTable() {
         </View>
         <View style={styles.separator} />
         <View style={styles.rightColumn}>
-          <Text style={styles.rightText}>64 kcal</Text>
-          <Text style={styles.rightText}>3.5 g</Text>
-          <Text style={styles.rightText}>2.7 g</Text>
-          <Text style={styles.rightText}>4.7 g</Text>
-          <Text style={styles.rightText}>4.7 g</Text>
-          <Text style={styles.rightText}>3.3 g</Text>
-          <Text style={styles.rightText}>0,17 g</Text>
+          <Text style={styles.rightText}>{Energy}</Text>
+          <Text style={styles.rightText}>{Fat} </Text>
+          <Text style={styles.rightText}>{Saturated_Fat}</Text>
+          <Text style={styles.rightText}>{Carbonhydrates}</Text>
+          <Text style={styles.rightText}>{Sugars}</Text>
+          <Text style={styles.rightText}>{Proteins}</Text>
+          <Text style={styles.rightText}>{Salt}</Text>
         </View>
       </View>
     </View>

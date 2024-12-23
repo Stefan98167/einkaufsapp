@@ -1,9 +1,11 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
+  const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraActive, setCameraActive] = useState(true);
 
@@ -27,6 +29,7 @@ export default function App() {
   function handleBarCodeScanned({ type, data }: { type: string, data: string }) {
     console.log(`Barcode Scanned - Type: ${type}, Number: ${data}`);
     setCameraActive(false);
+    router.push(`/DetailsScreen?barcode=${data}`);
   }
 
   if (!cameraActive) {
