@@ -43,13 +43,13 @@ export default function NutritionalTable({ productData }: { productData: Product
         </View>
         <View style={styles.separator} />
         <View style={styles.rightColumn}>
-          <Text style={styles.rightText}>{Energy}</Text>
-          <Text style={styles.rightText}>{Fat} </Text>
-          <Text style={styles.rightText}>{Saturated_Fat}</Text>
-          <Text style={styles.rightText}>{Carbonhydrates}</Text>
-          <Text style={styles.rightText}>{Sugars}</Text>
-          <Text style={styles.rightText}>{Proteins}</Text>
-          <Text style={styles.rightText}>{Salt}</Text>
+          <Text style={styles.rightText}>{Energy} kcal</Text>
+          <Text style={styles.rightText}>{Fat} g</Text>
+          <Text style={styles.rightText}>{Saturated_Fat} g</Text>
+          <Text style={styles.rightText}>{Carbonhydrates} g</Text>
+          <Text style={styles.rightText}>{Sugars} g</Text>
+          <Text style={styles.rightText}>{Proteins} g</Text>
+          <Text style={styles.rightText}>{Salt} g</Text>
         </View>
       </View>
     </View>
