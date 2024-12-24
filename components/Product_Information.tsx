@@ -52,8 +52,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "#000",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
     alignItems: "flex-start",
   },
   headerContainer: {
