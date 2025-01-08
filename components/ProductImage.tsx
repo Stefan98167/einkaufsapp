@@ -21,7 +21,7 @@ export default function ProductImage({ productData }: { productData: ProductData
           resizeMode="cover"
         />
         {/* Dark Overlay */}
-        <View style={styles.overlay} />
+        {/* <View style={styles.overlay} /> */}
       </BlurView>
 
       {/* Foreground Image */}
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     overflow: "hidden", // Ensures blur and overlay respect container boundaries
   },
   blurContainer: {
-    ...StyleSheet.absoluteFillObject, // Covers the entire container
+    ...StyleSheet.absoluteFillObject, // Fill the container
   },
   fullBackgroundImage: {
     width: "100%",

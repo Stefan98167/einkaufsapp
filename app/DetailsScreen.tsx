@@ -32,6 +32,7 @@ export default function DetailsScreen() {
       {productData && (
         <>
           <ProductImage productData={productData} />
+          
           <Product_Information productData={productData} />
         </>
       )}
