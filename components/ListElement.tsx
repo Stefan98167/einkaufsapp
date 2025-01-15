@@ -8,21 +8,21 @@ interface ListItem {
   id: string;
   name: string;
   count: number;
-  size: string;
+  barcode: string;
 }
 
 const ListElement = () => {
   const data: ListItem[] = [
-    { id: "1", name: "Ländle Milch", count: 7, size: "1000ml" },
-    { id: "2", name: "Coca-Cola", count: 2, size: "500ml" },
-    { id: "3", name: "Barilla Spaghetti", count: 1, size: "500g" },
-    { id: "4", name: "Wiener Schnitzel", count: 2, size: "1000g" },
-    { id: "5", name: "Ländle Kartoffel", count: 3, size: "1000g" },
-    { id: "6", name: "Vöslauer Limo", count: 8, size: "500ml" },
-    { id: "7", name: "Schiwasser VO ÜS", count: 3, size: "1000ml" },
-    { id: "8", name: "Mohren Spezial", count: 24, size: "500ml" },
-    { id: "9", name: "Egger Wälderle", count: 6, size: "330ml" },
-    { id: "10", name: "Wälder Koks", count: 4, size: "500ml" },
+    { id: "1", name: "Ländle Milch", count: 7, barcode: "9021700102505" },
+    { id: "2", name: "Coca-Cola", count: 2, barcode: "5449000009067" },
+    { id: "3", name: "Barilla Spaghetti", count: 1, barcode: "8076800195057" },
+    { id: "4", name: "Wiener Schnitzel", count: 2, barcode: "4061458036092" },
+    { id: "5", name: "Kartoffel Püree", count: 3, barcode: "4104420016408" },
+    { id: "6", name: "Vöslauer Limo", count: 8, barcode: "9009700307809" },
+    { id: "7", name: "Eistee VO ÜS", count: 3, barcode: "9120105741033" },
+    { id: "8", name: "Mohren Spezial", count: 24, barcode: "90135309" },
+    { id: "9", name: "Egger Wälderle", count: 6, barcode: "0902525419940" },
+    { id: "10", name: "Spar Orangensaft", count: 4, barcode: "9100000756523" },
   ];
 
   const renderItem = ({ item }: { item: ListItem }) => (
@@ -30,7 +30,7 @@ const ListElement = () => {
       <Link
         href={{
           pathname: "/DetailsScreen",
-          params: { name: item.name, count: item.count, size: item.size },
+          params: { name: item.name, count: item.count, barcode: item.barcode },
         }}
         asChild
       >
