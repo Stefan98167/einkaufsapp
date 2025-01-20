@@ -8,6 +8,12 @@ import { ThemedView } from "@/components/ThemedView";
 import  AddButton  from "@/components/AddButton";
 import ListElement from "@/components/ListElement";
 import { Link } from "expo-router";
+import { Client, Account, ID } from 'react-native-appwrite';
+
+const client = new Client()
+    .setProject('6787a1f8002b46b56168')
+    .setPlatform('com.project.einkaufsapp');
+
 
 export default function HomeScreen() {
   return (
