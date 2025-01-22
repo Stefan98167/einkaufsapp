@@ -1,21 +1,34 @@
-import { Image, StyleSheet, Platform, View } from "react-native";
+import { Image, StyleSheet, Platform, View, TextInput, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { useState, useEffect } from "react";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import  AddButton  from "@/components/AddButton";
+import AddButton from "@/components/AddButton";
 import ListElement from "@/components/ListElement";
-import { Link } from "expo-router";
-import { Client, Account, ID } from 'react-native-appwrite';
-
-const client = new Client()
-    .setProject('6787a1f8002b46b56168')
-    .setPlatform('com.project.einkaufsapp');
-
+import { Link, router } from "expo-router";
+import { account } from './appwrite.config'; // Fixed import path
+import { ID } from "react-native-appwrite";
 
 export default function HomeScreen() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      await account.get();
+      setLoading(false);
+    } catch (error) {
+      console.log('Not authenticated:', error);
+      router.replace('./login');
+    }
+  };
+
+  if (loading) {
+    return null;
+  }
+
   return (
     <LinearGradient
       colors={["#171717", "#4B2F7B"]}
@@ -32,7 +45,6 @@ export default function HomeScreen() {
     </LinearGradient>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
