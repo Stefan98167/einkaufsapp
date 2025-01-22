@@ -19,8 +19,6 @@ export default AddButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    marginHorizontal: 10,
-    marginVertical: 60,
   },
   button: {
     padding: 30,
