@@ -69,7 +69,7 @@ const ListElement = () => {
 
 const styles = StyleSheet.create({
   flatListContent: {
-    paddingVertical: 20,
+    paddingVertical: 0,
   },
   listContainer: {
     flexDirection: "row",
