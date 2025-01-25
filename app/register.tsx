@@ -11,7 +11,6 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const handleLogin = async () => {
     try {
       setLoading(true);
@@ -37,7 +36,6 @@ export default function LoginScreen() {
       setLoading(false);
     }
   };
-
   return (
     <LinearGradient
       colors={["#171717", "#4B2F7B"]}
@@ -63,13 +61,13 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <ThemedText>Login</ThemedText>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <ThemedText>Register</ThemedText>
         </TouchableOpacity>
         <Text style={{ textAlign: 'center', color: 'white' }}>
-          Don’t have an account?{' '}
-          <Text style={{ color: 'violet' }} onPress={() => router.push('/register')}>
-            Register
+          Already have an account?{' '}
+          <Text style={{ color: 'violet' }} onPress={() => router.push('/login')}>
+            Login
           </Text>
         </Text>
       </View>
