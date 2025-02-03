@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View, Button, TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useGlobalSearchParams } from 'expo-router';
 import ProductImage from "../components/ProductImage";
@@ -31,6 +31,14 @@ export default function DetailsScreen() {
     >
       {productData && (
         <>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 32, marginHorizontal: 16 }}>
+            <TouchableOpacity onPress={() => {/* Add navigation logic here */}}>
+              <Text style={{ color: "#FFFFFF", fontSize: 50 }}>{'<'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {/* Add add-to-list logic here */}}>
+              <Text style={{ color: "#FFFFFF", fontSize: 16 }}>Add</Text>
+            </TouchableOpacity>
+          </View>
           <ProductImage productData={productData} />
           
           <Product_Information productData={productData} />
