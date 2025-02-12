@@ -1,29 +1,84 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import CountItemHome from "./CountItemHome";
+import { Client, Databases, Query, Account } from "appwrite";
 
 interface ListItem {
-  id: string;
+  $id: string;    // Appwrite Dokument-ID
   name: string;
   count: number;
   barcode: string;
+  userId: string;
 }
 
 const ListElement = () => {
-  const data: ListItem[] = [
-    { id: "1", name: "Ländle Milch", count: 7, barcode: "9021700102505" },
-    { id: "2", name: "Coca-Cola", count: 2, barcode: "5449000009067" },
-    { id: "3", name: "Barilla Spaghetti", count: 1, barcode: "8076800195057" },
-    { id: "4", name: "Wiener Schnitzel", count: 2, barcode: "4061458036092" },
-    { id: "5", name: "Kartoffel Püree", count: 3, barcode: "4104420016408" },
-    { id: "6", name: "Vöslauer Limo", count: 8, barcode: "9009700307809" },
-    { id: "7", name: "Eistee VO ÜS", count: 3, barcode: "9120105741033" },
-    { id: "8", name: "Mohren Spezial", count: 24, barcode: "90135309" },
-    { id: "9", name: "Egger Wälderle", count: 6, barcode: "0902525419940" },
-    { id: "10", name: "Spar Orangensaft", count: 4, barcode: "9100000756523" },
-  ];
+  const [data, setData] = useState<ListItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [userId, setUserId] = useState<string | null>(null); // State für die User-ID
+
+  useEffect(() => {
+    // Appwrite Client initialisieren
+    const client = new Client();
+    client
+      .setEndpoint("https://cloud.appwrite.io/v1") // Appwrite Endpoint
+      .setProject("6787a1f8002b46b56168"); // Projekt-ID
+
+    const account = new Account(client);
+    const databases = new Databases(client);
+
+    // Funktion zum Abrufen der User-ID
+    const getUserId = async () => {
+      try {
+        const user = await account.get();
+        setUserId(user.$id); // User-ID setzen
+        console.log("User-ID:", user.$id);
+        return user.$id;
+      } catch (error) {
+        console.error("Fehler beim Abrufen der User-ID:", error);
+        setLoading(false);
+        return null; // oder eine andere Fehlerbehandlung
+      }
+    };
+
+    // Rufe die User-ID ab und lade die Liste
+    const loadList = async () => {
+      const currentUserId = await getUserId();
+      if (currentUserId) {
+        databases
+          .listDocuments("einkaufsapp", "items", [
+            Query.equal("userId", currentUserId),
+          ])
+          .then((response) => {
+            console.log("Liste geladen:", response.documents);
+            const listItems = response.documents.map((doc: any) => ({
+              $id: doc.$id,
+              name: doc.name,
+              count: doc.count,
+              barcode: doc.barcode,
+              userId: doc.userId,
+            }));
+            setData(listItems);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Fehler beim Laden der Liste:", error);
+            setLoading(false);
+          });
+      }
+    };
+
+    loadList();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Lädt...</Text>
+      </View>
+    );
+  }
 
   const renderItem = ({ item }: { item: ListItem }) => (
     <View style={styles.listContainer}>
@@ -61,7 +116,7 @@ const ListElement = () => {
     <FlatList
       data={data}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.$id}
       contentContainerStyle={styles.flatListContent}
     />
   );
@@ -70,6 +125,11 @@ const ListElement = () => {
 const styles = StyleSheet.create({
   flatListContent: {
     paddingVertical: 0,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   listContainer: {
     flexDirection: "row",

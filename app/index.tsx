@@ -7,7 +7,7 @@ import AddButton from "@/components/AddButton";
 import SearchBar from "@/components/SearchBar";
 import ListElement from "@/components/ListElement";
 import { Link, router } from "expo-router";
-import { account } from './appwrite.config'; // Fixed import path
+import { account } from './appwrite.config';
 import { ID } from "react-native-appwrite";
 
 export default function HomeScreen() {
