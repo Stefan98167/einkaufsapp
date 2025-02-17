@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     backgroundColor: "black",
-    marginTop: "20%",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     overflow: "hidden", // Ensures blur and overlay respect container boundaries
