@@ -45,7 +45,6 @@ export default function HomeScreen() {
             <AddButton />
           </Link>
         </View>
-        <SearchBar />
         <ListElement />
       </LinearGradient>
     </TouchableWithoutFeedback>

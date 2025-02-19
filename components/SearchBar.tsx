@@ -1,14 +1,27 @@
-import React, { forwardRef } from "react";
-import { 
-  View, 
-  TextInput, 
-  StyleSheet, 
-  ViewProps, 
+import React, { useState, useEffect, forwardRef } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  ViewProps,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 
-const SearchBar = forwardRef<View, ViewProps>((props, ref) => {
+interface SearchBarProps extends ViewProps {
+  onSearchChange: (term: string) => void;
+}
+
+const SearchBar = forwardRef<View, SearchBarProps>((props, ref) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchChange = (text: string) => {
+    setSearchTerm(text);
+    props.onSearchChange(text);
+  };
+
+ 
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container} ref={ref} {...props}>
@@ -17,26 +30,37 @@ const SearchBar = forwardRef<View, ViewProps>((props, ref) => {
           placeholder="Search..."
           placeholderTextColor="#A8A8A8"
           textAlign="left"
+          value={searchTerm}
+          onChangeText={handleSearchChange}
         />
       </View>
     </TouchableWithoutFeedback>
   );
 });
 
-export default SearchBar;
-
 const styles = StyleSheet.create({
   container: {
-    width: 300,
-    alignSelf: 'center',
+    width: "90%",
+    alignSelf: "center",
+    marginVertical: 10,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, 
   },
   input: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "#404040",
+    color: "#F0F0F0",
     borderRadius: 10,
-    padding: 15,
-    color: "white",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     fontSize: 16,
-    fontFamily: "Montserrat-Bold",
-    marginBottom: 30,
+    fontWeight: "600",
+    width: 350,
   },
 });
+
+export default SearchBar;
