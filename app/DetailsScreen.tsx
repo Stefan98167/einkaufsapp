@@ -1,7 +1,7 @@
 import { useRouter, useGlobalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ProductImage from "../components/ProductImage";
 import Product_Information from "../components/Product_Information";
@@ -79,20 +79,22 @@ export default function DetailsScreen() {
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1.5 }}
     >
-      {productData && (
-        <>
-          <View style={styles.topBar}>
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-              <Text style={styles.backButtonText}>{'‹'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
-              <Text style={styles.addButtonText}>Add</Text>
-            </TouchableOpacity>
-          </View>
-          <ProductImage productData={productData} />
-          <Product_Information productData={productData} />
-        </>
-      )}
+      <ScrollView>
+        {productData && (
+          <>
+            <View style={styles.topBar}>
+              <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                <Text style={styles.backButtonText}>{'‹'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
+                <Text style={styles.addButtonText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+            <ProductImage productData={productData} />
+            <Product_Information productData={productData} />
+          </>
+        )}
+      </ScrollView>
     </LinearGradient>
   );
 }
