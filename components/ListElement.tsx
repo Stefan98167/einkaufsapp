@@ -8,7 +8,7 @@ import { Client, Databases, Query, Account } from "appwrite";
 interface ListItem {
   $id: string;    // Appwrite Dokument-ID
   name: string;
-  count: number;
+  quantity: number;
   barcode: string;
   userId: string;
 }
@@ -55,7 +55,7 @@ const ListElement = () => {
             const listItems = response.documents.map((doc: any) => ({
               $id: doc.$id,
               name: doc.name,
-              count: doc.count,
+              quantity: doc.quantity,
               barcode: doc.barcode,
               userId: doc.userId,
             }));
@@ -85,7 +85,7 @@ const ListElement = () => {
       <Link
         href={{
           pathname: "/DetailsScreen",
-          params: { name: item.name, count: item.count, barcode: item.barcode },
+          params: { name: item.name, quantity: item.quantity, barcode: item.barcode },
         }}
         asChild
       >
@@ -107,7 +107,7 @@ const ListElement = () => {
         end={{ x: 1, y: 0 }}
         style={styles.countItem}
       >
-        <CountItemHome />
+        <CountItemHome quantity={item.quantity} documentId={item.$id} />
       </LinearGradient>
     </View>
   );

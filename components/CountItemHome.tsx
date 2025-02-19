@@ -2,13 +2,27 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Modal, TouchableOpacity, Platform } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
+import { Client, Databases, Account } from "appwrite";
 
-export default function CountItemHome() {
+interface Props {
+  quantity: number;
+  documentId: string;
+}
+
+export default function CountItemHome({ quantity, documentId }: Props) {
   const { count } = useLocalSearchParams();
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(count || "1");
+  const [selectedValue, setSelectedValue] = useState(quantity?.toString() || count || "1");
 
   const items = Array.from({ length: 100 }, (_, i) => `${i + 1}`);
+
+  const client = new Client();
+  client
+    .setEndpoint("https://cloud.appwrite.io/v1") // Appwrite Endpoint
+    .setProject("6787a1f8002b46b56168"); // Projekt-ID
+
+  const account = new Account(client);
+  const databases = new Databases(client);
 
   return (
     <View>
@@ -17,7 +31,6 @@ export default function CountItemHome() {
         onPress={() => setPickerVisible(true)}
         style={styles.countContainer}
       >
-        
         <Text style={styles.countText}>{selectedValue}</Text>
       </TouchableOpacity>
 
@@ -32,7 +45,22 @@ export default function CountItemHome() {
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={selectedValue}
-              onValueChange={(itemValue) => setSelectedValue(itemValue)}
+              onValueChange={async (itemValue) => {
+                setSelectedValue(itemValue);
+                try {
+                  await databases.updateDocument(
+                    "einkaufsapp", // Database ID
+                    "items", // Collection ID
+                    documentId, // Document ID
+                    {
+                      quantity: parseInt(itemValue as string),
+                    }
+                  );
+                  console.log("Quantity updated in database");
+                } catch (error) {
+                  console.error("Error updating quantity in database:", error);
+                }
+              }}
               style={styles.picker}
               itemStyle={styles.pickerItem} // Globales Styling für Picker-Items
             >
@@ -75,10 +103,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.9)", 
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
   },
   pickerWrapper: {
-    backgroundColor: "rgba(0, 0, 0, 0.0)", 
+    backgroundColor: "rgba(0, 0, 0, 0.0)",
     width: "80%",
     borderRadius: 12,
     justifyContent: "center",
@@ -86,7 +114,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: "100%",
-    height: Platform.OS === "ios" ? 200 : 50, 
+    height: Platform.OS === "ios" ? 200 : 50,
   },
   pickerItem: {
     color: "#FFFFFF",
