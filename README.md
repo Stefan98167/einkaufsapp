@@ -1,50 +1,85 @@
-# Welcome to your Expo app 👋
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![made-with-typescript](https://img.shields.io/badge/Made%20with-TypeScript-blue)](https://www.typescriptlang.org/)
+[![Built with Expo](https://img.shields.io/badge/Built%20with-Expo-brightgreen.svg)](https://expo.dev/)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Einkaufsapp
 
-## Get started
+Einkaufsapp is a modern shopping list application built with [Expo](https://expo.dev) and primarily written in TypeScript. The app is designed to help you manage shopping lists with a clean, intuitive interface that works on Android, iOS, and the web.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **Shopping List Management**: Easily create, update, and delete shopping lists.
+- **Item Tracking**: Add and edit item details such as quantity, price, and notes.
+- **Cross-Platform**: Enjoy a seamless experience across mobile and web.
+- **Modern Tech Stack**: Leveraging Expo, TypeScript, and JavaScript for an efficient development experience.
 
-2. Start the app
+## Getting Started
 
-   ```bash
-    npx expo start
-   ```
+### Prerequisites
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org) (LTS version recommended)
+- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/). You can install it globally using:
 
 ```bash
-npm run reset-project
+npm install -g expo-cli
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Installation
 
-## Learn more
+1. **Clone the repository:**
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+git clone https://github.com/Stefan98167/einkaufsapp.git
+cd einkaufsapp
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+2. **Install the dependencies:**
 
-## Join the community
+```bash
+npm install
+```
 
-Join our community of developers creating universal apps.
+### Running the App
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Start the Expo development server with:
+
+```bash
+npx expo start
+```
+
+You can then choose to run the app in one of the following ways:
+- **Android Emulator**
+- **iOS Simulator**
+- **Expo Go** (on your mobile device)
+
+## Project Structure
+
+- All main application code lives in the `app` directory.
+- We follow a file-based routing approach provided by Expo.
+
+## Development
+
+- For new feature development or bug fixes, please follow the repository’s coding standards.
+- When making changes, use clear commit messages and consider using branches for new features.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request with your suggestions or fixes.
+
+## Learn More
+
+- [Expo Documentation](https://docs.expo.dev) for detailed guides and advanced usage.
+- [Expo Tutorials](https://docs.expo.dev/tutorial/introduction/) to get started with hands-on examples.
+
+## License
+
+Distributed under the MIT License.
+
+## Authors
+
+Made by Stefan Ilic, Ruben Keller and Martin Beer.
+
+## Contact
+
+If you have any questions or feedback, please reach out via [GitHub Issues](https://github.com/Stefan98167/einkaufsapp/issues).
