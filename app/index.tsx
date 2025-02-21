@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Image, StyleSheet, Platform, View, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import { ThemedText } from "@/components/ThemedText";
@@ -27,6 +27,13 @@ export default function HomeScreen() {
     }
   };
 
+  const signout = async () => {
+    setLoading(true);
+    account.deleteSession('current');
+    router.replace('./login');
+    setLoading(false);
+  };
+
   if (loading) {
     return null;
   }
@@ -46,6 +53,12 @@ export default function HomeScreen() {
           </Link>
         </View>
         <ListElement />
+        <TouchableOpacity 
+          style={styles.logoutButton} 
+          onPress={signout}
+        >
+          <ThemedText style={styles.logoutText}>Logout</ThemedText>
+        </TouchableOpacity>
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
@@ -57,4 +70,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
+  logoutButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 15,
+    marginTop: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  logoutText: {
+    fontSize: 16,
+    textAlign: 'center',
+  }
 });
