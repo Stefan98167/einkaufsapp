@@ -1,17 +1,20 @@
-import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TextInput, TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { account } from "./appwrite.config";
 import { router } from "expo-router";
 import { ID } from "react-native-appwrite";
-import { Text } from "react-native";
+import { makeRedirectUri } from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import { OAuthProvider } from "appwrite";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // E-Mail/Passwort-Login
   const handleLogin = async () => {
     try {
       setLoading(true);
@@ -24,17 +27,59 @@ export default function LoginScreen() {
     }
   };
 
+  // Registrierung
   const handleRegister = async () => {
     try {
       setLoading(true);
       const userId = ID.unique();
       await account.create(userId, email, password, "User");
-      console.log(userId);
+      console.log("User registriert:", userId);
       await handleLogin();
     } catch (error) {
       console.error("Registration failed:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Google OAuth2 Login
+  const handleGoogleLogin = async () => {
+    try {
+      // Erzeuge einen dynamischen Redirect URI, der in allen Expo-Umgebungen funktioniert.
+      const deepLink = new URL(makeRedirectUri({ preferLocalhost: true }) || "");
+      if (!deepLink.hostname) {
+        deepLink.hostname = 'localhost';
+      }
+      const scheme = `${deepLink.protocol}//`; // z.B. "exp://" oder "yourapp://"
+
+      // Erstelle die OAuth2 URL über AppWrite (verwende als Provider "google")
+      const loginUrl = await account.createOAuth2Token(
+        OAuthProvider.Google,               // Provider
+        deepLink.toString(),    // Erfolgreicher Redirect URI
+        deepLink.toString()     // Fehler Redirect URI (kann gleich sein)
+      );
+      
+      // Starte den OAuth Flow im Browser und lausche auf den Redirect
+      const result = await WebBrowser.openAuthSessionAsync(String(loginUrl), scheme);
+      
+      if (result.type === 'success' && result.url) {
+        const url = new URL(result.url);
+        const secret = url.searchParams.get('secret');
+        const userId = url.searchParams.get('userId');
+
+        if (userId && secret) {
+          // Erstelle die Session mit den erhaltenen OAuth-Daten
+          await account.createSession(userId, secret);
+          router.replace("/");
+          console.log("Google Login erfolgreich");
+        } else {
+          throw new Error("Fehlende OAuth-Credentials in der Redirect URL");
+        }
+      } else {
+        throw new Error("Authentifizierung abgebrochen oder fehlgeschlagen");
+      }
+    } catch (error) {
+      console.error("Fehler beim Google OAuth Login:", error);
     }
   };
 
@@ -66,9 +111,12 @@ export default function LoginScreen() {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <ThemedText>Login</ThemedText>
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', color: 'white' }}>
-          Don’t have an account?{' '}
-          <Text style={{ color: 'violet' }} onPress={() => router.push('/register')}>
+        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+          <ThemedText>Login mit Google</ThemedText>
+        </TouchableOpacity>
+        <Text style={{ textAlign: "center", color: "white", marginTop: 10 }}>
+          Don’t have an account?{" "}
+          <Text style={{ color: "violet" }} onPress={() => router.push("/register")}>
             Register
           </Text>
         </Text>
@@ -96,6 +144,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#4B2F7B",
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  googleButton: {
+    backgroundColor: "#DB4437",
     padding: 15,
     borderRadius: 5,
     marginBottom: 10,
