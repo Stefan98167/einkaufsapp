@@ -1,12 +1,12 @@
-import { StyleSheet, View, TextInput, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { account } from "./appwrite.config";
 import { router } from "expo-router";
 import { ID } from "react-native-appwrite";
-import { makeRedirectUri } from 'expo-auth-session';
-import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 import { OAuthProvider } from "appwrite";
 
 export default function LoginScreen() {
@@ -48,24 +48,24 @@ export default function LoginScreen() {
       // Erzeuge einen dynamischen Redirect URI, der in allen Expo-Umgebungen funktioniert.
       const deepLink = new URL(makeRedirectUri({ preferLocalhost: true }) || "");
       if (!deepLink.hostname) {
-        deepLink.hostname = 'localhost';
+        deepLink.hostname = "localhost";
       }
       const scheme = `${deepLink.protocol}//`; // z.B. "exp://" oder "yourapp://"
 
-      // Erstelle die OAuth2 URL über AppWrite (verwende als Provider "google")
+      // Erstelle die OAuth2 URL über AppWrite (Provider "google")
       const loginUrl = await account.createOAuth2Token(
-        OAuthProvider.Google,               // Provider
-        deepLink.toString(),    // Erfolgreicher Redirect URI
-        deepLink.toString()     // Fehler Redirect URI (kann gleich sein)
+        OAuthProvider.Google, // Provider
+        deepLink.toString(),  // Erfolgreicher Redirect URI
+        deepLink.toString()   // Fehler-Redirect URI (kann gleich sein)
       );
-      
+
       // Starte den OAuth Flow im Browser und lausche auf den Redirect
       const result = await WebBrowser.openAuthSessionAsync(String(loginUrl), scheme);
-      
-      if (result.type === 'success' && result.url) {
+
+      if (result.type === "success" && result.url) {
         const url = new URL(result.url);
-        const secret = url.searchParams.get('secret');
-        const userId = url.searchParams.get('userId');
+        const secret = url.searchParams.get("secret");
+        const userId = url.searchParams.get("userId");
 
         if (userId && secret) {
           // Erstelle die Session mit den erhaltenen OAuth-Daten
@@ -108,12 +108,20 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
+
+        {/* Login-Button */}
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <ThemedText>Login</ThemedText>
         </TouchableOpacity>
+
+        {/* Google-Button als Bild */}
         <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
-          <ThemedText>Login mit Google</ThemedText>
+          <Image
+            source={require("../assets/images/image-Photoroom.png")} // Pfad anpassen!
+            style={styles.googleButtonImage}
+          />
         </TouchableOpacity>
+
         <Text style={{ textAlign: "center", color: "white", marginTop: 10 }}>
           Don’t have an account?{" "}
           <Text style={{ color: "violet" }} onPress={() => router.push("/register")}>
@@ -150,10 +158,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   googleButton: {
-    backgroundColor: "#DB4437",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
+    // Du kannst hier gerne noch Layout- oder Positionierungs-Styles angeben.
     alignItems: "center",
+    marginBottom: 10,
+  },
+  googleButtonImage: {
+    width: 800,         // Passe Breite an
+    height: 90,         // Passe Höhe an
+    resizeMode: "contain",
   },
 });

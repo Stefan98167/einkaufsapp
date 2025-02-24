@@ -9,13 +9,25 @@ import ListElement from "@/components/ListElement";
 import { Link, router } from "expo-router";
 import { account } from './appwrite.config';
 import { ID } from "react-native-appwrite";
+import { useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
+  // Mit einem extra State, der bei jedem Fokus geändert wird, erzwingen wir ein Re-Mount des ListElement
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     checkAuthStatus();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Jedes Mal, wenn der Screen den Fokus erhält, erhöhen wir den Key
+      setRefreshKey(prev => prev + 1);
+    }, [])
+  );
 
   const checkAuthStatus = async () => {
     try {
@@ -46,13 +58,13 @@ export default function HomeScreen() {
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1.5 }}
       >
-        <View style={{ marginVertical: 60, marginBottom: 30,
-         }}>
+        <View style={{ marginVertical: 60, marginBottom: 30 }}>
           <Link push href="/CameraScreen" asChild>
             <AddButton />
           </Link>
         </View>
-        <ListElement />
+        {/* Durch Ändern des Keys wird ListElement neu gemountet und lädt damit aktuelle Daten */}
+        <ListElement key={refreshKey} />
         <TouchableOpacity 
           style={styles.logoutButton} 
           onPress={signout}
@@ -85,3 +97,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 });
+
+
+// A reasonable implementation of useFocusEffect that
+// listens for the screen gaining focus.
+function useFocusEffect(effect: () => (() => void) | void) {
+  const navigation = useNavigation();
+
+  // Memoize the callback so effect doesn't run unnecessarily.
+  const callback = useCallback(() => {
+    const cleanup = effect();
+    return cleanup;
+  }, [effect]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", callback);
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation, callback]);
+}
+

@@ -1,17 +1,40 @@
 import { useRouter, useGlobalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ProductImage from "../components/ProductImage";
 import Product_Information from "../components/Product_Information";
-import { databases, account } from './appwrite.config'; // Import databases and account
-import { ID } from 'react-native-appwrite'; // Import ID
+import { databases, account } from './appwrite.config';
+import { ID, Query } from 'react-native-appwrite';
 
 export default function DetailsScreen() {
   const router = useRouter();
   const { barcode } = useGlobalSearchParams();
-  const [productData, setProductData] = useState<{ product: { product_name: string; ingredients_text: string; quantity: string; image_url: string; nutriments: { energy_value: number; carbohydrates_value: number; fat_value: number; fiber_value: number; proteins_value: number; salt_value: number; sugars_value: number; "saturated-fat_value": number; sodium_value: number; } } } | null>(null);
+  const [productData, setProductData] = useState<{
+    product: {
+      product_name: string;
+      ingredients_text: string;
+      quantity: string;
+      image_url: string;
+      nutriments: {
+        energy_value: number;
+        carbohydrates_value: number;
+        fat_value: number;
+        fiber_value: number;
+        proteins_value: number;
+        salt_value: number;
+        sugars_value: number;
+        "saturated-fat_value": number;
+        sodium_value: number;
+      }
+    }
+  } | null>(null);
+
+  // Zustände für Existenz-Check, Dokument-ID und Menge
+  const [exists, setExists] = useState(false);
+  const [documentId, setDocumentId] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     axios
@@ -36,39 +59,97 @@ export default function DetailsScreen() {
             }
           }
         });
-        console.log(response.data.product.image_url);
       })
       .catch(error => {
         console.error(`Error: ${error.message}`);
       });
   }, [barcode]);
 
+  // Prüfen, ob das Produkt bereits in der Datenbank existiert
+  useEffect(() => {
+    const checkIfItemExists = async () => {
+      if (!barcode) return;
+      try {
+        const user = await account.get();
+        const userId = user.$id;
+        const response = await databases.listDocuments(
+          "einkaufsapp",
+          "items",
+          [
+            Query.equal("barcode", barcode),
+            Query.equal("userId", userId)
+          ]
+        );
+        if (response.documents.length > 0) {
+          setExists(true);
+          setDocumentId(response.documents[0].$id);
+          // Vorhandene Menge aus der Datenbank übernehmen
+          setQuantity(response.documents[0].quantity);
+        } else {
+          setExists(false);
+          setDocumentId(null);
+        }
+      } catch (error) {
+        console.error("Error checking item existence:", error);
+      }
+    };
+
+    checkIfItemExists();
+  }, [barcode]);
+
   const handleAddItem = async () => {
     if (!productData) return;
 
     try {
-      // 1. Get the current user's ID
       const user = await account.get();
       const userId = user.$id;
 
-      // 2. Create a new document in the "items" collection
-      await databases.createDocument(
-        "einkaufsapp", // Database ID
-        "items", // Collection ID
-        ID.unique(), // Document ID (unique)
+      const response = await databases.createDocument(
+        "einkaufsapp", // Datenbank-ID
+        "items",       // Collection-ID
+        ID.unique(),   // Einzigartige Dokument-ID
         {
           name: productData.product.product_name,
-          quantity: 1, // Initial count
+          quantity: quantity,
           barcode: barcode,
           userId: userId,
         }
       );
 
-      // 3. Navigate back to the home screen
-      router.back();
+      // Setze Status nach dem Hinzufügen
+      setExists(true);
+      setDocumentId(response.$id);
+      // Navigiere zur Index-Seite (die dann die aktualisierte Menge lädt)
+      router.replace('/');
     } catch (error) {
       console.error("Error adding item to database:", error);
-      // Handle the error (e.g., show an alert to the user)
+    }
+  };
+
+  const handleDeleteItem = async () => {
+    if (!documentId) return;
+
+    try {
+      await databases.deleteDocument("einkaufsapp", "items", documentId);
+      setExists(false);
+      setDocumentId(null);
+      router.replace('/');
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
+
+  const handleUpdateQuantity = async () => {
+    if (!documentId) return;
+
+    try {
+      await databases.updateDocument("einkaufsapp", "items", documentId, {
+        quantity: quantity,
+      });
+      // Nach dem Update navigieren wir zurück zur Index-Seite
+      router.replace('/');
+    } catch (error) {
+      console.error("Error updating quantity:", error);
     }
   };
 
@@ -86,12 +167,32 @@ export default function DetailsScreen() {
               <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
                 <Text style={styles.backButtonText}>{'‹'}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
-                <Text style={styles.addButtonText}>Add</Text>
-              </TouchableOpacity>
+              {exists ? (
+                <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteItem}>
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
+                  <Text style={styles.addButtonText}>Add</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <ProductImage productData={productData} />
             <Product_Information productData={productData} />
+            {exists && (
+              <View style={styles.quantityContainer}>
+                <Text style={styles.quantityLabel}>Quantity:</Text>
+                <TextInput
+                  style={styles.quantityInput}
+                  value={String(quantity)}
+                  keyboardType="numeric"
+                  onChangeText={(text) => setQuantity(parseInt(text) || 0)}
+                />
+                <TouchableOpacity style={styles.updateButton} onPress={handleUpdateQuantity}>
+                  <Text style={styles.updateButtonText}>Update</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </>
         )}
       </ScrollView>
@@ -113,9 +214,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   backButton: {
-    backgroundColor: "#4B2F7B",
+    backgroundColor: "transparent",
     padding: 10,
     borderRadius: 25,
+    marginTop: 10,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -138,6 +240,57 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: "#4B2F7B",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  deleteButton: {
+    backgroundColor: "#FF4C4C",
+    paddingHorizontal: 20,
+    marginTop: 10,
+    paddingVertical: 10,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  deleteButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginVertical: 20,
+  },
+  quantityLabel: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    marginRight: 10,
+  },
+  quantityInput: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    width: 60,
+    textAlign: "center",
+    marginRight: 10,
+  },
+  updateButton: {
+    backgroundColor: "#4B2F7B",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  updateButtonText: {
+    color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
   },
